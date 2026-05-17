@@ -40,3 +40,5 @@ Grafana Login Page:
 Grafana Home Page:
 <img width="1912" height="863" alt="image" src="https://github.com/user-attachments/assets/495bc28d-c212-400b-878f-1996dbb53433" />
 
+
+# Custom secure Prometheus:
