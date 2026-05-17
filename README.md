@@ -42,3 +42,15 @@ Grafana Home Page:
 
 
 # Custom secure Prometheus:
+Custom production-style Prometheus image built for Docker-based monitoring environments.
+
+This image is designed for:
+
+ - Infrastructure monitoring
+ - Container monitoring
+ - Enterprise-style observability setup
+ - Docker monitoring stack
+ - Persistent TSDB metrics storage
+
+Dockerfile has been attched in this project named as: 
+
