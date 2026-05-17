@@ -1,0 +1,104 @@
+FROM ubuntu:24.04 as builder
+
+WORKDIR /home/ubuntu
+
+LABEL service="Custom Interprise Grafana" \
+      maintainer="Pratik Shinde" \
+      description="Custom Branding Grafana - Production Ready"
+
+RUN apt update && apt install -y wget tar
+
+# Download Interprise free grafana
+RUN wget https://dl.grafana.com/grafana-enterprise/release/13.0.1/grafana-enterprise_13.0.1_24542347077_linux_amd64.tar.gz \
+    && tar -xzf grafana-enterprise_13.0.1_24542347077_linux_amd64.tar.gz \
+    && rm -rf grafana-enterprise_13.0.1_24542347077_linux_amd64.tar.gz \
+    && mv grafana-13.0.1  grafana
+
+
+#-----------------PS-final Image--------------------------------------------------------------------
+FROM ubuntu:24.04
+
+LABEL service="Custom Grafana" \
+      maintainer="Pratik Shinde" \
+      role="DevOps Engineer" \
+      description="Custom Branding Grafana - Production Ready" \
+      grafanaVersion="grafana-enterprise-13.0.1"
+
+RUN apt update && apt install -y \
+    ca-certificates \
+    fontconfig \
+    libfreetype6 \
+    sed \
+    &&  rm -rf /var/lib/apt/lists/*
+
+## PS- Running Grafana as non-root = production-grade
+RUN useradd -m grafana
+
+WORKDIR /usr/share
+
+# Copy garafana builder to final
+COPY --from=builder /home/ubuntu/grafana/  /usr/share/grafana/
+
+# Grafana default land dir
+WORKDIR /usr/share/grafana
+
+# remove unwanted data
+RUN rm -rf \
+    docs \
+    tools \
+    packaging \
+    *.md \
+    LICENSE \
+    NOTICE.md \
+    plugins-bundled/grafana-testdata-datasource \
+    plugins-bundled/grafana-clock-panel
+
+
+RUN mkdir -p /var/lib/grafana /etc/grafana /var/log/grafana
+
+# ================= CUSTOM BRANDING =================
+#PS custom logo copy: (.svg)
+COPY PS-Observe-Simple-Logo.svg /tmp/logo.svg
+
+# Replace Grafana logos
+RUN cd /usr/share/grafana/public/build/static/img && \
+    for f in logo*.svg grafana_icon*.svg grafana_text_logo*.svg g8_login*.svg; do \
+        cp /tmp/logo.svg "$f"; \
+    done
+
+# ================= CUSTOM UI TEXT =================
+# 1.  Replace login page title
+RUN if [ -f public/views/index.html ]; then \
+    sed -i 's/Welcome to Grafana/Welcome to PS-Observe Grafana/g' public/views/index.html; \
+fi
+
+# 2. React UI (ONLY targeted replace)
+RUN find public/build -type f -name "*.js" -exec sed -i \
+    -e 's/Welcome to Grafana/Welcome to PS-Observe Grafana/g' \
+    -e 's/Home - Dashboards - Grafana/Home - Dashboards - PS-Observe  Grafana/g' \
+{} +
+
+#----
+
+#RUN chown -R grafana:grafana /usr/share/grafana /var/lib/grafana
+# Set ownership
+RUN chown -R grafana:grafana \
+    /usr/share/grafana \
+    /var/lib/grafana \
+    /var/log/grafana \
+    /etc/grafana
+
+# Environment variables
+ENV GF_SERVER_APP_TITLE="PS-Observe Grafana"
+
+EXPOSE 3000
+
+# Healthcheck
+#HEALTHCHECK --interval=30s --timeout=5s --start-period=20s \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=90s --retries=5 \
+CMD wget --quiet --tries=1 --spider http://localhost:3000/api/health || exit 1
+
+# run grafana with grafana user
+USER grafana
+
+CMD ["/usr/share/grafana/bin/grafana", "server", "--homepath=/usr/share/grafana"]
