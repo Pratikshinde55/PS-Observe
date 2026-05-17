@@ -32,3 +32,11 @@ Command:
       -e GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s/grafana/ \
       -e GF_SERVER_SERVE_FROM_SUB_PATH=true \
       pratikshinde55/ps-devops:ps-observe-grafana-v1
+
+
+Grafana Login Page:
+<img width="1916" height="856" alt="image" src="https://github.com/user-attachments/assets/61b3709e-94a5-4c42-ac7e-3d943c5bf58e" />
+
+Grafana Home Page:
+<img width="1912" height="863" alt="image" src="https://github.com/user-attachments/assets/495bc28d-c212-400b-878f-1996dbb53433" />
+
