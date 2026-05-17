@@ -1,0 +1,66 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="180" fill="#0F172A"/>
+
+  <!-- Simple Hexagon -->
+  <polygon
+    points="512,120 770,270 770,570 512,720 254,570 254,270"
+    stroke="#F97316"
+    stroke-width="22"
+    fill="none"
+  />
+
+  <!-- Large PS -->
+  <text
+    x="512"
+    y="500"
+    text-anchor="middle"
+    font-family="Segoe UI, Arial, sans-serif"
+    font-size="260"
+    font-weight="800"
+    fill="#FFFFFF"
+    letter-spacing="8"
+  >
+    PS
+  </text>
+
+  <!-- Small DevOps Line -->
+  <path
+    d="M300 610 H430 L470 540 L530 690 L590 470 L650 610 H730"
+    stroke="#22C55E"
+    stroke-width="16"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+
+  <!-- Observe -->
+  <text
+    x="512"
+    y="840"
+    text-anchor="middle"
+    font-family="Segoe UI, Arial, sans-serif"
+    font-size="72"
+    font-weight="700"
+    fill="#F97316"
+    letter-spacing="8"
+  >
+    OBSERVE
+  </text>
+
+  <!-- Subtitle -->
+  <text
+    x="512"
+    y="900"
+    text-anchor="middle"
+    font-family="Segoe UI, Arial, sans-serif"
+    font-size="30"
+    font-weight="500"
+    fill="#94A3B8"
+    letter-spacing="5"
+  >
+    DEVOPS • MONITORING • CLOUD
+  </text>
+
+</svg>
