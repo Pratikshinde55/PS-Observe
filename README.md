@@ -142,3 +142,33 @@ Prometheus Runtime Command:
      pratikshinde55/ps-devops:ps-observe-prometheus-v1 \
      --storage.tsdb.path=/prometheus \
      --storage.tsdb.retention.time=30d
+
+
+# Node Exporter:
+
+Port no: 9100:9100 if want expose
+
+     docker run -d \
+     --name ps-node-exporter \
+     --network monitoring \
+     --restart unless-stopped \ 
+     -v /proc:/host/proc:ro \
+     -v /sys:/host/sys:ro \
+     -v /:/rootfs:ro \
+     prom/node-exporter \
+    --path.rootfs=/rootfs
+
+
+# cAdvisor:
+
+Port no: 8080:8080 if want expose
+
+    docker run -d \
+    --name ps-cadvisor \
+    --network monitoring \
+    --restart unless-stopped \
+    -v /:/rootfs:ro \
+    -v /var/run:/var/run:rw \
+    -v /sys:/sys:ro \
+    -v /var/lib/docker:/var/lib/docker:ro \
+    gcr.io/cadvisor/cadvisor
