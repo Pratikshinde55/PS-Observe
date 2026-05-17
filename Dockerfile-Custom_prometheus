@@ -1,0 +1,56 @@
+FROM ubuntu:24.04 AS builder
+
+WORKDIR /tmp
+
+RUN apt update && apt install -y wget tar
+
+RUN wget https://github.com/prometheus/prometheus/releases/download/v3.5.1/prometheus-3.5.1.linux-amd64.tar.gz \
+    && tar -xzf prometheus-3.5.1.linux-amd64.tar.gz
+
+
+# ================= FINAL IMAGE =================
+
+FROM ubuntu:24.04
+
+LABEL service="ps-observe-prometheus" \
+      version="prometheus-3.5.1" \
+      maintainer="Pratik Shinde" \
+      role="DevOps Engineer"\
+      description="PS-Observe Monitoring - Prometheus" \
+      environment="production"
+
+RUN apt update && apt install -y \
+    #ca-certificates \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN useradd -m prometheus
+
+# Create Prometheus directories
+RUN mkdir -p /etc/prometheus /prometheus
+
+# Prometheus working directory
+WORKDIR /etc/prometheus
+
+
+COPY --from=builder --chown=prometheus:prometheus /tmp/prometheus-3.5.1.linux-amd64 .
+
+# Copy custom config
+COPY --chown=prometheus:prometheus prometheus.yml /etc/prometheus/prometheus.yml
+
+# Permissions
+RUN chown -R prometheus:prometheus /etc/prometheus /prometheus
+
+# health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=5 \
+CMD curl -f http://localhost:9090/-/healthy || exit 1
+
+# Switch user
+USER prometheus
+
+EXPOSE 9090
+
+ENTRYPOINT ["./prometheus"]
+
+CMD ["--config.file=/etc/prometheus/prometheus.yml"]
