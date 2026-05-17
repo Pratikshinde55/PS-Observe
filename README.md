@@ -19,6 +19,11 @@ For Dockerfile refer abhove **"Dockerfile-Custom_Grafana"** In this file use cha
 
 For **Enterprise Grade** with Access HTTPS with domain then need pass env during run time: 
 
+GF_SERVER_SERVE_FROM_SUB_PATH=true & GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s/grafana/    Those are only needed when Grafana runs behind:
+ - Nginx reverse proxy
+ - ALB path routing
+ - subpath like /grafana
+
       docker run -d \
       --name ps-observe-grafana \
       -p 30001:3000 \
