@@ -1,7 +1,9 @@
 # PS-Observe
 Production-grade monitoring and observability stack using Prometheus, Grafana, cAdvisor, and Node Exporter with container-level metrics visualization.
 
+# Create Monitoring Network
 
+     docker network create monitoring
 
 # Custom Branding Enterprise Grafana Dockerfile:
 Overview
