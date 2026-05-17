@@ -24,6 +24,8 @@ GF_SERVER_SERVE_FROM_SUB_PATH=true & GF_SERVER_ROOT_URL=%(protocol)s://%(domain)
  - ALB path routing
  - subpath like /grafana
 
+Command:
+
       docker run -d \
       --name ps-observe-grafana \
       -p 30001:3000 \
