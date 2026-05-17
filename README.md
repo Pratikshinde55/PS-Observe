@@ -36,8 +36,12 @@ Command:
 
 Normal without domain:
 
-     docker run -d --name ps-observe-grafana -p 3000:3000 -v grafana-data:/var/lib/grafana pratikshinde55/ps-devops:ps-observe-grafana-v1 --restart unless-stopped
-
+     docker run -d \
+     --name ps-observe-grafana \
+     --restart unless-stopped \
+     -p 3000:3000 \
+     -v grafana-data:/var/lib/grafana \
+     pratikshinde55/ps-devops:ps-observe-grafana-v1
 
 Grafana Login Page:
 <img width="1916" height="856" alt="image" src="https://github.com/user-attachments/assets/61b3709e-94a5-4c42-ac7e-3d943c5bf58e" />
