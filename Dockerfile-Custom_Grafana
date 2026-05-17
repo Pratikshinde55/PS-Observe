@@ -98,6 +98,8 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=90s --retries=5 \
 CMD wget --quiet --tries=1 --spider http://localhost:3000/api/health || exit 1
 
+#CMD curl -f http://localhost:3000/api/health || exit 1  #(This is new industry ecosystem to curl for healthcheck)
+
 # run grafana with grafana user
 USER grafana
 
