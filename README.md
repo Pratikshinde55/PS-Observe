@@ -31,7 +31,12 @@ Command:
       -p 30001:3000 \
       -e GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s/grafana/ \
       -e GF_SERVER_SERVE_FROM_SUB_PATH=true \
+      -v grafana-data:/var/lib/grafana \
       pratikshinde55/ps-devops:ps-observe-grafana-v1
+
+Normal without domain:
+
+   docker run -d --name ps-observe-grafana -p 3000:3000 -v grafana-data:/var/lib/grafana pratikshinde55/ps-devops:ps-observe-grafana-v1 --restart unless-stopped
 
 
 Grafana Login Page:
